@@ -5,7 +5,8 @@ using CreateMapSystem;
 
 public class EditMode : IMode
 {
-    public GameObject targetObject { get; set; } // 創造模式菜單選中的物件 或 編輯模式指向的物件
+    // 創造模式菜單選中的物件 或 編輯模式指向的物件
+    public GameObject targetObject { get; set; } 
 
     public void Rotate(int y)
     {

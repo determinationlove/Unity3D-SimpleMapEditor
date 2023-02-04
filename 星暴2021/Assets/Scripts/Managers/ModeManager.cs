@@ -6,9 +6,9 @@ using LSFile;
 
 public class ModeManager : MonoBehaviour
 {
-    private IMode mode;
-    private CreateMode createMode;
-    private EditMode editMode;
+    public IMode mode;
+    public CreateMode createMode;
+    public EditMode editMode;
     private pathFile pf_obj;
     private DatasPath pathDatas;
 
@@ -20,6 +20,8 @@ public class ModeManager : MonoBehaviour
 
     public void Init()
     {
+        createMode.ObjPool();
+
         mode = editMode;
         mode.targetObject = null;
 
@@ -48,7 +50,7 @@ public class ModeManager : MonoBehaviour
     {
         mode.Rotate(y);
     }
-
+/*
     public void ObjPool() // 物件池
     {
         for (int i = 0; i < objData.Count; i++)
@@ -103,5 +105,5 @@ public class ModeManager : MonoBehaviour
             return;
         }
     }
-
+*/
 }

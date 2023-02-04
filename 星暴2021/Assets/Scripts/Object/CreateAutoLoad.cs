@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using CreateMapSystem;
 using LSFile;
 
@@ -10,6 +11,9 @@ public struct CreateAutoLoad : IAutoLoad
     public List<string> props { get; set; }
     private DatasPath pathDatas;
     private pathFile pf_obj;
+
+    private GameObject temp;
+    private Text tempT;
 
     public void Init()
     {
@@ -26,10 +30,14 @@ public struct CreateAutoLoad : IAutoLoad
 
         for (int i = 0; i < props.Count; i++)
         {
-            GameObject tempText =
-                GameObject.Instantiate(Resources.Load<GameObject>("UI/Button"), UGUI.transform);
+            temp = GameObject.Instantiate(
+                    Resources.Load<GameObject>("UI/Button"), UGUI.transform
+                );
 
-            tempText.transform.SetParent(UGUI.transform);
+            tempT = temp.transform.GetChild(0).GetComponent<Text>();
+            tempT.text = props[i].Split(',')[1];
+
+            temp.transform.SetParent(UGUI.transform);
         }
     }
 
