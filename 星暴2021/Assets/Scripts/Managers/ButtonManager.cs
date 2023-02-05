@@ -8,6 +8,7 @@ using LSFile;
 
 public class ButtonManager : MonoBehaviour
 {
+    /*
     [SerializeField] private MissionManager MissionM;
     [SerializeField] private TargetCreate TargetC;
     [SerializeField] private ScrollAutoLoad SAL;
@@ -197,4 +198,5 @@ public class ButtonManager : MonoBehaviour
 
         last = TargetObj;
     }
+    */
 }

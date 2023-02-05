@@ -9,27 +9,27 @@ public class CreateMode : IMode
     private DatasPath pathDatas = new DatasPath();
     private pathFile pf_obj;
     [SerializeField] private List<string> objData;
-    public List<GameObject> ObjPoolList;
+    public List<GameObject> ObjPoolList = new List<GameObject>();
 
+    public Transform DesignParent { get; set; }
     public Vector3 mouseV3;
-    public GameObject targetObject { get; set; } // 創造模式菜單選中的物件 或 編輯模式指向的物件
+
+    // 創造模式菜單選中的物件 或 編輯模式指向的物件 或 讀檔選中的選項
+    public GameObject targetObject { get; set; }
+
     private string instansPath;
     private Color checkColor;
-
-    public MissionManager MissionM;
-    private Vector3 PoolPosV3 = new Vector3(5000, 0, 0);
+    public Vector3 PoolPosV3 = new Vector3(5000, 0, 0);
 
     private Ray ray;
     private RaycastHit hit;
     private Vector3 hitPos;
 
-    public int y = 45;
+    public int ObjId;
 
-
-    // 創造模式菜單選中的物件 或 編輯模式指向的物件
-    public GameObject TGobj()
+    public string getResPath(int n)
     {
-        return null;
+        return objData[n].Split(',')[2] + "/" + objData[n].Split(',')[1];
     }
 
     public void ObjPool()
@@ -40,7 +40,7 @@ public class CreateMode : IMode
 
         for (int i = 0; i < objData.Count; i++)
         {
-            instansPath = objData[i].Split(',')[2] + "/" + objData[i].Split(',')[1];
+            instansPath = getResPath(i);
 
             GameObject Prefab = GameObject.Instantiate(
                 Resources.Load<GameObject>(instansPath), PoolPosV3, Quaternion.identity
@@ -71,24 +71,33 @@ public class CreateMode : IMode
             hitPos = PoolPosV3;
     }
 
-
-    public void FollowMouse(int ObjId) {
+    public void FollowMouse()
+    {
         if (targetObject == null)
             return;
-        
+
         targetObject.transform.position = hitPos;
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            instansPath = getResPath(ObjId);
+
+            InstansObj(
+                ObjId, hitPos, targetObject.transform.rotation,
+                instansPath, DesignParent
+            );
+            return;
+        }
     }
 
+    public void InstansObj(int ObjId, Vector3 posV3, Quaternion rotV3, string path, Transform designParent)
+    {
+        GameObject Obj =
+            GameObject.Instantiate(Resources.Load<GameObject>(path), posV3, rotV3);
+        Obj.transform.SetParent(designParent);
+        Obj.transform.GetComponent<BoxCollider>().enabled = true;
+    }
 
-    /*
-        public void InstansObj(int ObjId, Vector3 posV3, Quaternion rotV3, string path)
-        {
-            GameObject Obj =
-                GameObject.Instantiate(Resources.Load<GameObject>(path), posV3, rotV3);
-            Obj.transform.parent = DesignParent;
-            Obj.transform.GetComponent<BoxCollider>().enabled = true;
-        }
-    */
     public void Rotate(int y)
     {
         if (Input.GetKeyDown(KeyCode.Q))

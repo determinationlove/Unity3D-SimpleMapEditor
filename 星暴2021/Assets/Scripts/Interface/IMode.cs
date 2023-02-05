@@ -10,7 +10,5 @@ namespace CreateMapSystem
         public GameObject targetObject { get; set; }
 
         public void Rotate(int y);
-
-        public GameObject TGobj();
     }
 }

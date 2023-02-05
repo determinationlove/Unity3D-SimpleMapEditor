@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using LSFile;
-
+/*
 public class TargetCreate : MonoBehaviour
 {
     private pathFile pf_obj;
@@ -126,3 +126,4 @@ public class TargetCreate : MonoBehaviour
     }
 
 }
+*/

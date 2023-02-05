@@ -5,17 +5,16 @@ using UnityEngine.UI;
 using System.IO;
 using CreateMapSystem;
 
-public struct SLAutoLoad : IAutoLoad
+public class SLAutoLoad : IAutoLoad
 {
     public Transform UGUI { get; set; } // 用拉的
     public List<string> props { get; set; }
     public Dropdown dp;
     public DirectoryInfo dir;
-    private DatasPath pathDatas;
+    private DatasPath pathDatas = new DatasPath();
 
     public void Init()
     {
-        pathDatas = new DatasPath();
         props = new List<string>();
 
         dp = UGUI.GetComponent<Dropdown>();

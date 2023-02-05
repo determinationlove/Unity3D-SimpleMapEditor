@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using LSFile;
+using CreateMapSystem;
 
 public class MissionManager : MonoBehaviour
 {
 
-    [SerializeField] public Transform DesignParent;
-    [SerializeField] public Transform InstansParent;
+    public DatasPath path;
+
+    [SerializeField] public Transform DesignParent { get; set; }
+
     [Range(0, 3)]
     public int FLevel;
     private string mapPath, objPath;
@@ -28,11 +31,11 @@ public class MissionManager : MonoBehaviour
     {
         if (!_start)
             return;
+        
+        path = new DatasPath();
 
-        mapPath = CreateMapManager.CMM_mapPath;
-        objPath = CreateMapManager.CMM_objPath;
-        DesignParent = CreateMapManager.DesignParent;
-        InstansParent = CreateMapManager.InstansParent;
+        mapPath = path.MapsPath;
+        objPath = path.ObjDataCSV;
 
         pf_map = new pathFile(mapPath, null, col);
         pf_obj = new pathFile(objPath);
@@ -56,25 +59,6 @@ public class MissionManager : MonoBehaviour
         {
             temp = "";
             tempTrans = DesignParent.GetChild(i);
-
-            for (int j = 0; j < objData.Count; j++)
-            {
-                if (tempTrans.name.Contains(objData[j].Split(',')[1]))
-                {
-                    temp = (i + 1).ToString() + "," + (j + 1).ToString() + ",";
-                    break;
-                }
-            }
-
-            temp += PV3(tempTrans.position) + "," + PV3(tempTrans.eulerAngles) + "," + PV3(tempTrans.localScale);
-            
-            mapData.Add(temp);
-        }
-
-        for (int i = 1; i < InstansParent.childCount; i++)
-        {
-            temp = "";
-            tempTrans = InstansParent.GetChild(i);
 
             for (int j = 0; j < objData.Count; j++)
             {
@@ -126,11 +110,8 @@ public class MissionManager : MonoBehaviour
         pf_map = new pathFile(mapPath);
         pf_obj = new pathFile(objPath);
 
-        //mapData = new List<string>();
-        objData = new List<string>();
-
         mapData = pf_map.Load(filename);
-        objData = pf_obj.Load();
+        //objData = pf_obj.Load();
 
         int temp = objData.Count;
 
@@ -154,32 +135,23 @@ public class MissionManager : MonoBehaviour
             );
 
             tempObj.transform.localScale = PV3_R(mapData[i].Split(',')[4]);
-
-            tempObj.transform.parent = InstansParent.transform;
+            tempObj.transform.GetComponent<BoxCollider>().enabled = true;
+            tempObj.transform.parent = DesignParent.transform;
         }
     }
 
     public void ClearMap()
     {
-        for (int i = 0; i < InstansParent.childCount; i++)
+        for (int i = 0; i < DesignParent.childCount; i++)
         {
             if (i == 0)
                 continue;
-            Destroy(InstansParent.GetChild(i).gameObject);
+            Destroy(DesignParent.GetChild(i).gameObject);
         }
 
         for (int i = 0; i < DesignParent.childCount; i++)
         {
             Destroy(DesignParent.GetChild(i).gameObject);
-        }
-    }
-
-    public void ClearInstans(){
-        for (int i = 0; i < InstansParent.childCount; i++)
-        {
-            if (i == 0)
-                continue;
-            Destroy(InstansParent.GetChild(i).gameObject);
         }
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using CreateMapSystem;
 using LSFile;
 
-public struct CreateAutoLoad : IAutoLoad
+public class CreateAutoLoad : IAutoLoad
 {
     public Transform UGUI { get; set; } // 用拉的
     public List<string> props { get; set; }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using LSFile;
-
+/*
 public class ScrollAutoLoad : MonoBehaviour
 {
     private MissionManager mm;
@@ -85,3 +85,4 @@ public class ScrollAutoLoad : MonoBehaviour
         dp.AddOptions(AllFileName);
     }
 }
+*/
