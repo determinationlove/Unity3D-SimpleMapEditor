@@ -12,11 +12,13 @@ public class ModeManager : MonoBehaviour
     public SettingMode settingMode;
     private pathFile pf_obj;
     private DatasPath pathDatas;
+    public Transform DesignParent;
+    public GameObject Floor;
 
-    [SerializeField] private List<string> objData; // 菜單資料
-    [SerializeField] private string objPath; // ObjData.csv
-    //[SerializeField] private string instansPath; // Resources
+    private List<string> objData; // 菜單資料
+    private string objPath; // ObjData.csv
 
+    [Range(1, 359)]
     public int y = 45;
 
     public void Init()
@@ -24,12 +26,15 @@ public class ModeManager : MonoBehaviour
         instance();
 
         createMode.ObjPool();
+        editMode.Floor = Floor;
 
         mode = editMode;
         mode.targetObject = null;
 
         objPath = pathDatas.ObjDataCSV;
         objData = pf_obj.Load();
+
+        createMode.DesignParent = DesignParent;
     }
 
     public void instance()

@@ -7,6 +7,7 @@ public class EditMode : IMode
 {
     // 創造模式菜單選中的物件 或 編輯模式指向的物件
     public GameObject targetObject { get; set; }
+    public GameObject Floor { get; set; }
 
     public void Rotate(int y)
     {
@@ -14,7 +15,7 @@ public class EditMode : IMode
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
-            if (hit.transform.gameObject.name == "Plane")
+            if (hit.transform.gameObject == Floor)
                 return;
                 
             targetObject = hit.transform.gameObject;

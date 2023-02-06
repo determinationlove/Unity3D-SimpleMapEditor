@@ -2229,8 +2229,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44ad081f61f3c834c8b9d988a6bf4de1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objData: []
-  objPath: 
+  DesignParent: {fileID: 507198441}
+  Floor: {fileID: 889921822}
   y: 45
 --- !u!1 &889921822
 GameObject:
@@ -2245,7 +2245,7 @@ GameObject:
   - component: {fileID: 889921825}
   - component: {fileID: 889921824}
   m_Layer: 0
-  m_Name: Plane
+  m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2609,7 +2609,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000052928925, y: -0.00022504422}
+  m_AnchoredPosition: {x: -0.0000042915344, y: -0.00022504422}
   m_SizeDelta: {x: -3.8155518, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1033532327
@@ -3282,8 +3282,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07bdd5bdc26781f4cb80e8839eafbde2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ModeM: {fileID: 871064656}
   ES: {fileID: 542201289}
+  ModeM: {fileID: 871064656}
   MissionM: {fileID: 1434900224}
   DesignParent: {fileID: 507198441}
   cPlane: {fileID: 735342813}
@@ -3294,7 +3294,6 @@ MonoBehaviour:
   slAllBtn: {fileID: 1640676580}
   cUGUI: {fileID: 1033532326}
   slUGUI: {fileID: 1244188571}
-  last: {fileID: 0}
 --- !u!1 &1388551713
 GameObject:
   m_ObjectHideFlags: 0
@@ -3580,7 +3579,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 325823028}
   m_HandleRect: {fileID: 325823027}
   m_Direction: 0
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

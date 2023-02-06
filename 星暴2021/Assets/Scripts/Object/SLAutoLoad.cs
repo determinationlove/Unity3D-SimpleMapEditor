@@ -11,14 +11,14 @@ public class SLAutoLoad : IAutoLoad
     public List<string> props { get; set; }
     public Dropdown dp;
     public DirectoryInfo dir;
-    private DatasPath pathDatas = new DatasPath();
+    private DatasPath path = new DatasPath();
 
     public void Init()
     {
         props = new List<string>();
 
         dp = UGUI.GetComponent<Dropdown>();
-        dir = new DirectoryInfo(pathDatas.MapsPath);
+        dir = new DirectoryInfo(path.MapsPath);
     }
 
     public void AutoLoad() // 讀檔時載入既有檔案 （Datas 資料夾下所有 csv）
@@ -28,6 +28,8 @@ public class SLAutoLoad : IAutoLoad
 
         for (int i = 0; i < dir.GetFiles("*.csv").Length; i++)
         {
+            if (dir.GetFiles("*.csv")[i].Name == "ObjData.csv")
+                continue;
             props.Add(dir.GetFiles("*.csv")[i].Name);
         }
 

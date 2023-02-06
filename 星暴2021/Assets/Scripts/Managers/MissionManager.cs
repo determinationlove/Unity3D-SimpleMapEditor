@@ -25,13 +25,11 @@ public class MissionManager : MonoBehaviour
     private string temp;
     private string instansPath;
 
-    // id, objId, pos, rotate, scale
-    // 1, 1, 0:0:0, 0:0:0, 1:1:1
-    public void MissionManager_Start(bool _start = true)
+    public void Init(bool _start = true)
     {
         if (!_start)
             return;
-        
+
         path = new DatasPath();
 
         mapPath = path.MapsPath;
@@ -42,7 +40,6 @@ public class MissionManager : MonoBehaviour
         mapData = new List<string>();
         objData = new List<string>();
         objData = pf_obj.Load();
-
     }
 
     public void SaveMission(string filepath, string filename, bool run = true)
@@ -70,7 +67,7 @@ public class MissionManager : MonoBehaviour
             }
 
             temp += PV3(tempTrans.position) + "," + PV3(tempTrans.eulerAngles) + "," + PV3(tempTrans.localScale);
-            
+
             mapData.Add(temp);
         }
 
@@ -111,13 +108,15 @@ public class MissionManager : MonoBehaviour
         pf_obj = new pathFile(objPath);
 
         mapData = pf_map.Load(filename);
-        //objData = pf_obj.Load();
 
         int temp = objData.Count;
 
+        if (mapData == null)
+            return;
+
         if (mapData.Count < 1)
             return;
-            
+
         for (int i = 0; i < mapData.Count; i++)
         {
             for (int j = 0; j < temp; j++)
@@ -125,7 +124,6 @@ public class MissionManager : MonoBehaviour
                 if (mapData[i].Split(',')[1].Contains((j + 1).ToString()))
                 {
                     instansPath = objData[j].Split(',')[2] + "/" + objData[j].Split(',')[1];
-                    print(instansPath);
                 }
             }
 

@@ -10,7 +10,9 @@ using CreateMapSystem;
 public class UIManager : MonoBehaviour
 {
     private ICanvas canvas; // 切換當前顯示介面（創造 或 存讀檔）
+    [SerializeField] private EventSystem ES;
     public ModeManager ModeM;
+    public MissionManager MissionM;
     private DatasPath path;
 
     /// UI畫布
@@ -24,20 +26,15 @@ public class UIManager : MonoBehaviour
     private CreateAutoLoad createAutoLoad; // 載入創造模式物件菜單（objData）
     private SLAutoLoad slAutoLoad; // 讀檔時載入既有檔案 （Datas 資料夾下所有 csv）
 
-    [SerializeField] private EventSystem ES;
-
     private Transform createBtn; // 創造模式按紐
     private Transform saveloadBtn; // 存讀檔模式按紐
     private int createBtnCount;
     private int saveloadBtnCount;
-    private List<Button> createBtnList = new List<Button>();
     private UnityAction[] createActions;
     private UnityAction[] saveActions;
     private UnityAction[] loadActions;
 
-    private List<Button> ObjBtnList = new List<Button>();
 
-    public MissionManager MissionM;
     public Transform DesignParent;
     public GameObject cPlane;
     public GameObject slPlane;
@@ -54,7 +51,8 @@ public class UIManager : MonoBehaviour
         instance();
         ModeM.Init();
         createAutoLoad.Init();
-        MissionM.MissionManager_Start();
+        MissionM.Init();
+        MissionM.DesignParent = DesignParent;
 
         createCanvas.Plane = cPlane;
         createCanvas.autoLoader = createAutoLoad;
@@ -72,15 +70,12 @@ public class UIManager : MonoBehaviour
         slAutoLoad.UGUI = slUGUI;
         slAutoLoad.Init();
 
-        MissionM.DesignParent = DesignParent;
-        ModeM.createMode.DesignParent = DesignParent;
-
         canvas = saveLoadCanvas;
         Cancel();
 
         AutoLoads();
         ButtonAddListener();
-        
+
         canvas = createCanvas;
         DisplayPlane();
 
@@ -90,8 +85,6 @@ public class UIManager : MonoBehaviour
 
     public void instance()
     {
-        canvas = new Canvas();
-        ModeM = new ModeManager();
         path = new DatasPath();
         createCanvas = new CreateCanvas();
         saveLoadCanvas = new SaveLoadCanvas();
@@ -138,14 +131,9 @@ public class UIManager : MonoBehaviour
         saveloadBtnCount = saveloadBtn.GetChild(0).childCount - 2;
         for (int i = 0; i < saveloadBtnCount; i++)
         {
-            if (i == 0){
-                
-        print(saveActions[i]);
-        saveloadBtn.GetChild(0).GetChild(i + 2).GetComponent<InputField>()
-                .onValueChanged.AddListener(delegate { DataNameExist(); });
-            }
-            
-                
+            if (i == 0)
+                saveloadBtn.GetChild(0).GetChild(i + 2).GetComponent<InputField>()
+                    .onValueChanged.AddListener(delegate { DataNameExist(); });
             else
                 saveloadBtn.GetChild(0).GetChild(i + 2).GetComponent<Button>()
                 .onClick.AddListener(saveActions[i]);
@@ -167,7 +155,7 @@ public class UIManager : MonoBehaviour
     }
 
 
-    [SerializeField] private GameObject last;
+    private GameObject last;
     private GameObject Child;
     public void check_TGbtn()
     {
@@ -205,7 +193,7 @@ public class UIManager : MonoBehaviour
     {
         if (ModeM.createMode.targetObject != null)
             ModeM.createMode.targetObject.transform.position = ModeM.createMode.PoolPosV3;
-        
+
         ModeM.mode = ModeM.settingMode;
         canvas = saveLoadCanvas;
         saveLoadCanvas.Plane = saveLoadCanvas.SavePlane;
@@ -215,7 +203,8 @@ public class UIManager : MonoBehaviour
     public void loadBtn()
     {
         if (ModeM.createMode.targetObject != null)
-            ModeM.createMode.targetObject.transform.position = ModeM.createMode.PoolPosV3;
+            ModeM.createMode.targetObject.transform.position =
+                ModeM.createMode.PoolPosV3;
 
         ModeM.mode = ModeM.settingMode;
         canvas = saveLoadCanvas;
@@ -228,6 +217,9 @@ public class UIManager : MonoBehaviour
     public void Save()
     {
         if (saveLoadCanvas.Input.text == null)
+            return;
+        
+        if (saveLoadCanvas.Input.text == "ObjData")
             return;
 
         MissionM.SaveMission(path.MapsPath, saveLoadCanvas.Input.text);
@@ -250,7 +242,11 @@ public class UIManager : MonoBehaviour
             return;
 
         Text warning = saveLoadCanvas.SavePlane.transform.GetChild(1).GetComponent<Text>();
-        if (File.Exists(path.MapsPath + saveLoadCanvas.Input.text + ".csv"))
+
+        if (saveLoadCanvas.Input.text == "ObjData")
+            warning.text = 
+                "這是被占用的檔名！覆蓋檔案將導致程式錯誤，請換個檔名";
+        else if (File.Exists(path.MapsPath + saveLoadCanvas.Input.text + ".csv"))
             warning.text =
                  "*已有相同檔名，如果存檔將覆蓋同名檔案";
         else
@@ -269,8 +265,9 @@ public class UIManager : MonoBehaviour
     public void LeaveCreate() // 離開創造模式
     {
         if (ModeM.createMode.targetObject != null)
-            ModeM.createMode.targetObject.transform.position = ModeM.createMode.PoolPosV3;
-            
+            ModeM.createMode.targetObject.transform.position = 
+                ModeM.createMode.PoolPosV3;
+
         ES.SetSelectedGameObject(null);
         ModeM.mode = ModeM.editMode; // 切換為編輯模式
     }

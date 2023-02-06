@@ -78,7 +78,7 @@ public class CreateMode : IMode
 
         targetObject.transform.position = hitPos;
 
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1)) // 如果按下右鍵
         {
             instansPath = getResPath(ObjId);
 
