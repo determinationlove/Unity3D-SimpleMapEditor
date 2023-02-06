@@ -13,3 +13,6 @@
 ## 注意事項
 namespace `LSFile` 包含了將列表轉換為 csv 以及將 csv 轉換回列表的功能</br>
 `LSFile` 的所有方法基本上不會與專案裡的任何功能產生耦合性，只需要相應參數即可獨立運作
+
+## 作者
+[燐火幽冥](https://home.gamer.com.tw/homeindex.php?owner=guiltyghost)
